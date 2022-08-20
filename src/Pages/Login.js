@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Col, Container, Form, Row, Button } from "react-bootstrap";
+import { Col, Container, Form, Row, Button, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../services/appApi";
 import { AppContext, socket } from "../context/appContext";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { ThreeDots } from "react-loader-spinner";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,7 +24,7 @@ function Login() {
   }
   return (
     <Container className="shadow-lg p-3 mb-5 bg-white rounded">
-      <Row>
+      <Row className="container-row">
         <Col md={7} className="login-bg"></Col>
         <Col
           md={5}
@@ -34,6 +36,7 @@ function Login() {
           >
             <h1 className="text-center">Login Account</h1>
             <Form.Group className="mb-3" controlId="formBasicEmail">
+              {error && <p className="alert alert-danger">{error.data}</p>}
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
@@ -53,7 +56,11 @@ function Login() {
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-              Login
+              {isLoading ? (
+                <ThreeDots color="#00BFFF" height={30} width={30} />
+              ) : (
+                "Login"
+              )}
             </Button>
             <div className="py-4">
               <p className="text-center">

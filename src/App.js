@@ -8,6 +8,8 @@ import Signup from "./Pages/Signup";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { AppContext, socket } from "./context/appContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [rooms, setRooms] = useState([]);
@@ -39,14 +41,16 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<Home />} />
           {!user && (
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
             </>
           )}
-          <Route path="/chat" element={<Chat />} />
+          {user && <Route path="/chat" element={<Chat />} />}
         </Routes>
+        <ToastContainer toastClassName="dark-toast" />
       </BrowserRouter>
     </AppContext.Provider>
   );

@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from "react";
-import { ListGroup, Row, Col } from "react-bootstrap";
+import { ListGroup, Row, Col, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppContext } from "../context/appContext";
 import { addNotifications, resetNotifications } from "../features/userSlice";
+import { useLogoutUserMutation } from "../services/appApi";
 import "./Sidebar.css";
 
 function Sidebar() {
+  const [logoutUser] = useLogoutUserMutation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const {
@@ -50,10 +52,20 @@ function Sidebar() {
     setMembers(payload);
   });
 
-  function getRooms() {
-    fetch("http://localhost:5000/rooms")
+  async function getRooms() {
+    await fetch("https://chatapp-b-end.herokuapp.com/rooms", {
+      headers: { token: user.token },
+    })
       .then((res) => res.json())
-      .then((data) => setRooms(data));
+      .then((data) => setRooms(data))
+      .catch(async (err) => {
+        console.log(err);
+        if (err.request.status === 403) {
+          await logoutUser(user);
+          // redirect to home page
+          await window.location.replace("/");
+        }
+      });
   }
 
   function orderIds(id1, id2) {
@@ -73,7 +85,6 @@ function Sidebar() {
   if (!user) {
     return <></>;
   }
-
   return (
     <>
       <h2>Available Rooms</h2>
@@ -99,7 +110,7 @@ function Sidebar() {
         ))}
       </ListGroup>
       <h2>Members</h2>
-      <ListGroup>
+      <ListGroup style={{ maxHeight: "300px", overflowY: "scroll" }}>
         {members.map((member) => (
           <ListGroup.Item
             key={member.id}

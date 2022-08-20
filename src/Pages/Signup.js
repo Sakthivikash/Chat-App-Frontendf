@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Profile from "../images/profile.png";
 import { useSignupUserMutation } from "../services/appApi";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import { Circles } from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
 
 function Signup() {
   const navigate = useNavigate();
@@ -79,6 +79,7 @@ function Signup() {
                 src={imagePreview || Profile}
                 className="signup-profile-pic"
               />
+              {error && <p className="alert alert-danger">{error.data}</p>}
               <Form.Group>
                 <Form.Label
                   htmlFor="image-upload"
@@ -125,7 +126,7 @@ function Signup() {
             </Form.Group>
             <Button variant="primary" type="submit">
               {upladingImg || isLoading ? (
-                <Circles color="#00BFFF" height={80} width={80} />
+                <ThreeDots color="#00BFFF" height={30} width={30} />
               ) : (
                 "Signup"
               )}

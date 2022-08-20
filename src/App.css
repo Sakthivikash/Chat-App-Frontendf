@@ -53,6 +53,9 @@
   z-index: 99;
   background: none;
 }
+#navbar {
+  background-color: rgb(4, 82, 121) !important;
+}
 @media (max-width: 770px) {
   .container-row {
     display: flex;

@@ -58,7 +58,7 @@ function MessageBox() {
     <>
       <div className="msg-container">
         {user && !privateMemberMsg?._id && (
-          <div className="alert alert-info">
+          <div className="alert alert-info" style={{ textAlign: "center" }}>
             You are in the {currentRoom} room
           </div>
         )}
@@ -126,6 +126,7 @@ function MessageBox() {
                 type="text"
                 placeholder="Your message"
                 disabled={!user}
+                value={message}
                 onChange={(e) => setMessage(e.target.value)}
               ></Form.Control>
             </Form.Group>
