@@ -57,7 +57,7 @@ function Signup() {
     signupUser({ name, email, password, picture: url }).then(({ data }) => {
       if (data) {
         console.log(data);
-        navigate("/chat");
+        navigate("/login");
       }
     });
   }
